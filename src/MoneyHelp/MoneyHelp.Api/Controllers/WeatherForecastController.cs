@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using MoneyHelp.DataAccess.Abstractions.Models;
+using MoneyHelp.DataAccess.Abstractions.Repositories;
 
 namespace MoneyHelp.Api.Controllers
 {
@@ -6,28 +8,28 @@ namespace MoneyHelp.Api.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
+        private readonly IWalletRepository _walletRepository;
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(IWalletRepository walletRepository, ILogger<WeatherForecastController> logger)
         {
+            _walletRepository = walletRepository;
             _logger = logger;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IActionResult> GetAsync()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var a = new Wallet
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                Id = Guid.NewGuid(),
+                Name = "Test"
+            };
+
+            var s = await _walletRepository.Add(a);
+
+            var wallets = await _walletRepository.GetAll();
+            return Ok(wallets);
         }
     }
 }

@@ -33,8 +33,9 @@ Transaction --|> Entity
 class Transaction {
     +Guid WalletId
     +Guid UserId
-    +Money Amount
     +Guid TypeId
+    +Decimal Amount
+    +String? Description
     +DateTime Timestamp
 }
 
@@ -42,6 +43,6 @@ Transaction ..> Type
 Type --|> Entity
 
 class Type {
-    +Guid Name
+    +String Name
 }
 ```
