@@ -27,19 +27,14 @@ internal abstract class BaseRepository<T> : IRepository<T> where T : Entity
     {
         try
         {
-            var savedEntity = entity with
-            {
-                Id = Guid.NewGuid(),
-            };
-
-            //await _set.AddAsync(savedEntity);
+            //await _set.AddAsync(entity);
             var result = await CommitChanges();
             if (result.IsFailure)
             {
                 return Result.Failure<T>(result.Error!);
             }
 
-            return Result.Success(savedEntity);
+            return Result.Success(entity);
         }
         catch (Exception ex)
         {

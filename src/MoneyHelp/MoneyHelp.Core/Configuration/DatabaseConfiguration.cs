@@ -1,6 +1,6 @@
 ﻿namespace MoneyHelp.Core.Configuration;
 
-public sealed record DbConfig : IConfig
+public sealed record DatabaseConfiguration : IConfig
 {
     public static string ConfigurationName => "Db";
 

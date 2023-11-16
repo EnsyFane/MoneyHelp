@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyHelp.Api", "MoneyHelp.Api\MoneyHelp.Api.csproj", "{84DDD13F-91BF-48C9-82C2-E7B510688271}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyHelp.Api", "MoneyHelp.Api\MoneyHelp.Api.csproj", "{84DDD13F-91BF-48C9-82C2-E7B510688271}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyHelp.Core", "MoneyHelp.Core\MoneyHelp.Core.csproj", "{9402F2E0-DD4C-47F0-90D7-BF541871BC0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyHelp.Core", "MoneyHelp.Core\MoneyHelp.Core.csproj", "{9402F2E0-DD4C-47F0-90D7-BF541871BC0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyHelp.DataAccess.Abstractions", "MoneyHelp.DataAccess.Abstractions\MoneyHelp.DataAccess.Abstractions.csproj", "{58637F8E-4578-41ED-8F2C-B37C49BBD13B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyHelp.DataAccess.Abstractions", "MoneyHelp.DataAccess.Abstractions\MoneyHelp.DataAccess.Abstractions.csproj", "{58637F8E-4578-41ED-8F2C-B37C49BBD13B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyHelp.DataAccess.EntityFramework", "MoneyHelp.DataAccess.EntityFramework\MoneyHelp.DataAccess.EntityFramework.csproj", "{4DE471FD-9B2C-4BE5-9851-95234EBA37A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyHelp.DataAccess.EntityFramework", "MoneyHelp.DataAccess.EntityFramework\MoneyHelp.DataAccess.EntityFramework.csproj", "{4DE471FD-9B2C-4BE5-9851-95234EBA37A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyHelp.DataAccess.EntityFramework.Migrations", "MoneyHelp.DataAccess.EntityFramework.Migrations\MoneyHelp.DataAccess.EntityFramework.Migrations.csproj", "{B08AA6ED-9E86-4A9F-AF5A-094DD431F901}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4DE471FD-9B2C-4BE5-9851-95234EBA37A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DE471FD-9B2C-4BE5-9851-95234EBA37A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DE471FD-9B2C-4BE5-9851-95234EBA37A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B08AA6ED-9E86-4A9F-AF5A-094DD431F901}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B08AA6ED-9E86-4A9F-AF5A-094DD431F901}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B08AA6ED-9E86-4A9F-AF5A-094DD431F901}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B08AA6ED-9E86-4A9F-AF5A-094DD431F901}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

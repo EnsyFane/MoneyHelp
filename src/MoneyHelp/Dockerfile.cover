@@ -1,0 +1,26 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0
+WORKDIR /src
+
+COPY . .
+RUN dotnet add "./MoneyHelp.Api/MoneyHelp.Api.csproj" package "JetBrains.dotCover.CommandLineTools.linux-x64" --version 2022.3.2 --package-directory /app/nuget
+
+RUN dotnet publish "./MoneyHelp.Api/MoneyHelp.Api.csproj" -c Release -o /app/publish
+
+RUN mkdir /coverage
+
+WORKDIR /app
+
+CMD [ \
+    "dotnet", \
+    "exec", \
+    "--runtimeconfig", \
+    "/app/nuget/jetbrains.dotcover.commandlinetools.linux-x64/2022.3.2/tools/dotCover.unix.runtimeconfig.json", \
+    "/app/nuget/jetbrains.dotcover.commandlinetools.linux-x64/2022.3.2/tools/dotCover.exe", \
+    "cover-dotnet", \
+    "--Instance=1", \
+    "--Output=/coverage/coverage.xml", \
+    "--ReportType=SummaryXML", \
+    "--AttributeFilters=System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute", \
+    "--TargetArguments=./publish/TheSeater.WebApi.dll", \
+    "--Filters=-:FluentValidation*" \
+]

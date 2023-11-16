@@ -4,6 +4,7 @@ public sealed record TransactionType
 {
     public Guid Id { get; init; }
 
+    public Guid UserId { get; init; }
     public required string Name { get; init; }
 
     public DateTime CreatedOn { get; init; }

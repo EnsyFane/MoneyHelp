@@ -2,12 +2,5 @@
   "Db": {
     "ConnectionString": "Server=localhost;Database=money-help;User Id=SA;Password=Password123;TrustServerCertificate=True;",
     "Schema": "money_help"
-  },
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "AllowedHosts": "*"
+  }
 }

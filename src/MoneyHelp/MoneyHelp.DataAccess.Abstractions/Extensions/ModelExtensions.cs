@@ -3,12 +3,12 @@ using Domain = MoneyHelp.Core.Models;
 
 namespace MoneyHelp.DataAccess.Abstractions.Extensions;
 
-public static class Mapper
+public static class ModelExtensions
 {
     public static Domain.Transaction ToDomain(this DB.Transaction transaction)
         => new()
         {
-            Id = transaction.Id,
+            Id = transaction.Id!.Value,
             WalletId = transaction.WalletId,
             UserId = transaction.UserId,
             TypeId = transaction.TypeId,
@@ -23,7 +23,8 @@ public static class Mapper
     public static Domain.TransactionType ToDomain(this DB.TransactionType transactionType)
         => new()
         {
-            Id = transactionType.Id,
+            Id = transactionType.Id!.Value,
+            UserId = transactionType.UserId,
             Name = transactionType.Name,
             CreatedOn = transactionType.CreatedOn,
             LastUpdatedOn = transactionType.LastUpdatedOn,
@@ -33,7 +34,7 @@ public static class Mapper
     public static Domain.Wallet ToDomain(this DB.Wallet wallet)
         => new()
         {
-            Id = wallet.Id,
+            Id = wallet.Id!.Value,
             UserId = wallet.UserId,
             Name = wallet.Name,
             CreatedOn = wallet.CreatedOn,

@@ -12,8 +12,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
     {
-        var config = configuration.GetRequiredSection(DbConfig.ConfigurationName).Get<DbConfig>()!;
-        services.Configure<DbConfig>(configuration.GetRequiredSection(DbConfig.ConfigurationName));
+        services.AddOptions<DatabaseConfiguration>()
+            .Bind(configuration.GetRequiredSection(DatabaseConfiguration.ConfigurationName))
+            .Validate(c => c.IsValid(), $"Invalid {DatabaseConfiguration.ConfigurationName} configuration.")
+            .ValidateOnStart();
+        var config = configuration.GetRequiredSection(DatabaseConfiguration.ConfigurationName).Get<DatabaseConfiguration>()!;
 
         services.AddDbContext<MoneyHelpDbContext>(options =>
         {

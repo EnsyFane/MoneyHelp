@@ -1,0 +1,15 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0-jammy
+USER root
+WORKDIR /app
+
+COPY . .
+
+WORKDIR /app/Tests/MoneyHelp.Api.ServiceTests
+RUN dotnet build
+
+ENTRYPOINT [ \
+    "dotnet", \
+    "test", \
+    "--logger", \
+    "trx;LogFileName=/test-results/integration.trx" \
+]
