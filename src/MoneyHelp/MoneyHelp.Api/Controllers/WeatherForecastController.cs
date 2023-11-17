@@ -18,7 +18,7 @@ namespace MoneyHelp.Api.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetAsync(CancellationToken ct)
         {
             var a = new Wallet
             {
@@ -26,7 +26,7 @@ namespace MoneyHelp.Api.Controllers
                 Name = "Test"
             };
 
-            var s = await _walletRepository.Add(a);
+            var s = await _walletRepository.Add(a, ct);
 
             return Ok(s);
         }
