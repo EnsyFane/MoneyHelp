@@ -24,9 +24,9 @@ public class MoneyHelpDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.HasDefaultSchema(_config.Schema);
         
-        modelBuilder.ApplyConfiguration(new TransactionConfiguration());
-        modelBuilder.ApplyConfiguration(new TypeConfiguration());
-        modelBuilder.ApplyConfiguration(new WalletConfiguration());
+        modelBuilder.ApplyConfiguration(new TransactionConfiguration())
+            .ApplyConfiguration(new TypeConfiguration())
+            .ApplyConfiguration(new WalletConfiguration());
 
         modelBuilder.Entity<Wallet>()
             .HasMany<Transaction>()

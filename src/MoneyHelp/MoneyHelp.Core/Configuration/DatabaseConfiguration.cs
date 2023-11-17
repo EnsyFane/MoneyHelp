@@ -9,5 +9,5 @@ public sealed record DatabaseConfiguration : IConfig
 
     public bool IsValid()
         => !string.IsNullOrWhiteSpace(ConnectionString)
-            && !string.IsNullOrWhiteSpace(Schema);
+        && !string.IsNullOrWhiteSpace(Schema);
 }

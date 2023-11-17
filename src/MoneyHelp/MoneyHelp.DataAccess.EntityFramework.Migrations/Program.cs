@@ -16,8 +16,8 @@ var builder = Host.CreateDefaultBuilder(args);
 
 builder.ConfigureAppConfiguration(configurationBuilder =>
 {
-    configurationBuilder.AddJsonFile("migrationsettings.json", optional: false);
-    configurationBuilder.AddEnvironmentVariables();
+    configurationBuilder.AddJsonFile("migrationsettings.json", optional: false)
+        .AddEnvironmentVariables();
 }).ConfigureServices((context, services) =>
 {
     services.AddOptions<DatabaseConfiguration>()
@@ -30,14 +30,14 @@ builder.ConfigureAppConfiguration(configurationBuilder =>
     {
         opts.UseSqlServer(config.ConnectionString, sqlOpts =>
         {
-            sqlOpts.EnableRetryOnFailure();
-            sqlOpts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds);
-            sqlOpts.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
-            sqlOpts.MigrationsHistoryTable(HistoryRepository.DefaultTableName, config.Schema);
+            sqlOpts.EnableRetryOnFailure()
+                .CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds)
+                .MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name)
+                .MigrationsHistoryTable(HistoryRepository.DefaultTableName, config.Schema);
         });
     });
-    services.AddScoped<DbContext, MoneyHelpDbContext>();
-    services.AddScoped<IMigrationExecutor, MigrationExecutor>();
+    services.AddScoped<DbContext, MoneyHelpDbContext>()
+        .AddScoped<IMigrationExecutor, MigrationExecutor>();
 });
 
 var app = builder.Build();

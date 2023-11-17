@@ -20,8 +20,8 @@ public static class ServiceCollectionExtensions
 
         return services.AddDbContext<MoneyHelpDbContext>(options =>
         {
-            options.UseSqlServer(config.ConnectionString);
-            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            options.UseSqlServer(config.ConnectionString)
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }).AddRepositories();
     }
 
