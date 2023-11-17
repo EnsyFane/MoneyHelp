@@ -16,9 +16,6 @@ public class WalletConfiguration : IEntityTypeConfiguration<Wallet>
         builder.ToTable(TableName);
         builder.AddDefaultConfigs();
 
-        builder.Property(x => x.UserId)
-            .IsRequired();
-
         builder.Property(x => x.Name)
             .HasMaxLength(Constants.MAX_WALLET_NAME_LENGTH);
     }

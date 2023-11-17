@@ -28,8 +28,7 @@ namespace MoneyHelp.Api.Controllers
 
             var s = await _walletRepository.Add(a);
 
-            var wallets = await _walletRepository.GetAll();
-            return Ok(wallets);
+            return Ok(s);
         }
     }
 }

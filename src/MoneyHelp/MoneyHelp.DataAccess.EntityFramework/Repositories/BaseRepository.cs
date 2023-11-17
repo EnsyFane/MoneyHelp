@@ -6,8 +6,6 @@ using MoneyHelp.DataAccess.Abstractions.Errors;
 using MoneyHelp.DataAccess.Abstractions.Models;
 using MoneyHelp.DataAccess.Abstractions.Repositories;
 
-using System.Runtime.CompilerServices;
-
 namespace MoneyHelp.DataAccess.EntityFramework.Repositories;
 
 internal abstract class BaseRepository<T> : IRepository<T> where T : Entity
@@ -23,62 +21,154 @@ internal abstract class BaseRepository<T> : IRepository<T> where T : Entity
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<Result<T>> Add(T entity)
+    public async Task<Result<T>> Add(T entity, CancellationToken ct)
     {
         try
         {
-            //await _set.AddAsync(entity);
-            var result = await CommitChanges();
-            if (result.IsFailure)
+            var normailzedEntity = entity with
             {
-                return Result.Failure<T>(result.Error!);
+                Id = null,
+                DeletedOn = null
+            };
+
+            await _set.AddAsync(normailzedEntity, ct);
+
+            var affectedRows = await _dbContext.SaveChangesAsync(ct);
+            if (affectedRows < 1)
+            {
+                _logger.LogWarning("Entity not added to the database.");
+                return Result.Failure<T>(new ChangesNotSavedError());
+            }
+            if (affectedRows > 1)
+            {
+                _logger.LogWarning("Too many rows affected when adding entity to the database.");
+                return Result.Failure<T>(new TooManyRowsAffectedError());
             }
 
-            return Result.Success(entity);
+            return Result.Success(normailzedEntity);
         }
         catch (Exception ex)
         {
-            var error = new GenericRepositoryError(ex);
-            _logger.LogError(error.Message);
-            return Result.Failure<T>(error);
+            return HandleRepositoryException<T>(ex);
         }
     }
 
-    public Task<Result<T>> Delete(Guid id)
+    public async Task<Result> SoftDelete(Guid userId, Guid id, CancellationToken ct)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<Result<IEnumerable<T>>> GetAll()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Result<T>> GetById(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Result<T>> Update(T entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    private async Task<Result> CommitChanges(bool shouldAffectMultipleRows = false, [CallerMemberName] string memberName = "")
-    {
-        var affectedRows = await _dbContext.SaveChangesAsync();
-        if (affectedRows < 1)
+        try
         {
-            _logger.LogWarning("Database change resulted in no affected rows. Caller method: {memberName}.", memberName);
-            return Result.Failure(new ChangesNotSavedError());
-        }
+            var deleteDate = DateTime.UtcNow;
 
-        if (!shouldAffectMultipleRows && affectedRows > 1)
+            var affectedRows = await _set.AsQueryable()
+                .Where(e => e.Id == id
+                    && e.UserId == userId)
+                .ExecuteUpdateAsync(x => x.SetProperty(p => p.DeletedOn, deleteDate), ct);
+
+            if (affectedRows < 1)
+            {
+                _logger.LogWarning("Entity not soft deleted.");
+                return Result.Failure(new ChangesNotSavedError());
+            }
+
+            return Result.Success();
+        }
+        catch (Exception ex)
         {
-            _logger.LogError("Database change resulted in more affected rows than expected. Affected rows: {affectedRows}. Caller method: {memberName}.", affectedRows, memberName);
-            return Result.Failure(new TooManyRowsAffectedError());
+            return HandleRepositoryException<bool>(ex);
         }
+    }
 
-        return Result.Success();
+    public async Task<Result> HardDelete(Guid userId, Guid id, CancellationToken ct)
+    {
+        try
+        {
+            var affectedRows = await _set.AsQueryable()
+                .Where(e => e.Id == id
+                    && e.UserId == userId)
+                .ExecuteDeleteAsync(ct);
+
+            if (affectedRows < 1)
+            {
+                _logger.LogWarning("Entity not hard deleted.");
+                return Result.Failure(new ChangesNotSavedError());
+            }
+
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return HandleRepositoryException<bool>(ex);
+        }
+    }
+
+    public async Task<Result<IEnumerable<T>>> GetAll(Guid userId, CancellationToken ct)
+    {
+        try
+        {
+            var result = await _set.AsQueryable()
+                .Where(e => e.UserId == userId)
+                .ToListAsync(ct);
+
+            return Result.Success(result.AsEnumerable());
+        }
+        catch (Exception ex)
+        {
+            return HandleRepositoryException<IEnumerable<T>>(ex);
+        }
+    }
+
+    public async Task<Result<T>> GetById(Guid userId, Guid id, CancellationToken ct)
+    {
+        try
+        {
+            var result = await _set.AsQueryable()
+                .Where(e => e.Id == id
+                    && e.UserId == userId)
+                .FirstOrDefaultAsync(ct);
+
+            if (result is null)
+            {
+                return Result.Failure<T>(new EntityNotFoundError());
+            }
+
+            return Result.Success(result);
+        }
+        catch (Exception ex)
+        {
+            return HandleRepositoryException<T>(ex);
+        }
+    }
+
+    public async Task<Result> Update(T entity, CancellationToken ct)
+    {
+        try
+        {
+            var affectedRows = await _set.AsQueryable()
+                .Where(e => e.Id == entity.Id
+                    && e.UserId == entity.UserId)
+                .ExecuteUpdateAsync(x => x.SetProperty(p => p, entity), ct);
+
+            if (affectedRows < 1)
+            {
+                _logger.LogWarning("Entity not soft deleted.");
+                return Result.Failure(new ChangesNotSavedError());
+            }
+
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return HandleRepositoryException<T>(ex);
+        }
+    }
+
+    private Result<TResult> HandleRepositoryException<TResult>(Exception ex)
+    {
+        switch (ex)
+        {
+            default:
+                _logger.LogError(ex.Message);
+                return Result.Failure<TResult>(new GenericRepositoryError(ex));
+        }
     }
 }

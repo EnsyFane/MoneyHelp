@@ -18,13 +18,11 @@ public static class ServiceCollectionExtensions
             .ValidateOnStart();
         var config = configuration.GetRequiredSection(DatabaseConfiguration.ConfigurationName).Get<DatabaseConfiguration>()!;
 
-        services.AddDbContext<MoneyHelpDbContext>(options =>
+        return services.AddDbContext<MoneyHelpDbContext>(options =>
         {
             options.UseSqlServer(config.ConnectionString);
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }).AddRepositories();
-
-        return services;
     }
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)

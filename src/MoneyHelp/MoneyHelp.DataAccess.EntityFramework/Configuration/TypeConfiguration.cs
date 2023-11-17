@@ -16,9 +16,6 @@ public class TypeConfiguration : IEntityTypeConfiguration<TransactionType>
         builder.ToTable(TableName);
         builder.AddDefaultConfigs();
 
-        builder.Property(x => x.UserId)
-            .IsRequired();
-
         builder.Property(x => x.Name)
             .HasMaxLength(Constants.MAX_TRANSACTION_TYPE_NAME_LENGTH);
     }

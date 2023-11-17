@@ -17,6 +17,11 @@ internal static class EntityTypeBuilderExtensions
             .ValueGeneratedOnAdd()
             .HasDefaultValueSql("NEWSEQUENTIALID()");
 
+        builder.Property(x => x.UserId)
+            .IsRequired()
+            .Metadata
+            .SetAfterSaveBehavior(PropertySaveBehavior.Throw);
+
         builder.Property(p => p.CreatedOn)
             .AsUtcDateTime()
             .HasDefaultValueSql("GETUTCDATE()")

@@ -3,7 +3,6 @@
 public sealed record Transaction : Entity
 {
     public Guid WalletId { get; init; }
-    public Guid UserId { get; init; }
     public Guid TypeId { get; init; }
     public decimal Amount { get; init; }
     public string? Description { get; init; }
