@@ -11,7 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyHelp.DataAccess.Abstra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyHelp.DataAccess.EntityFramework", "MoneyHelp.DataAccess.EntityFramework\MoneyHelp.DataAccess.EntityFramework.csproj", "{4DE471FD-9B2C-4BE5-9851-95234EBA37A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyHelp.DataAccess.EntityFramework.Migrations", "MoneyHelp.DataAccess.EntityFramework.Migrations\MoneyHelp.DataAccess.EntityFramework.Migrations.csproj", "{B08AA6ED-9E86-4A9F-AF5A-094DD431F901}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyHelp.DataAccess.EntityFramework.Migrations", "MoneyHelp.DataAccess.EntityFramework.Migrations\MoneyHelp.DataAccess.EntityFramework.Migrations.csproj", "{B08AA6ED-9E86-4A9F-AF5A-094DD431F901}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{86FA4F8E-7D89-4EB0-A0D0-BE8523B4C351}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyHelp.Services", "MoneyHelp.Services\MoneyHelp.Services.csproj", "{E326A38F-9CAD-4B6B-98D0-7FF1C460B3B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +47,10 @@ Global
 		{B08AA6ED-9E86-4A9F-AF5A-094DD431F901}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B08AA6ED-9E86-4A9F-AF5A-094DD431F901}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B08AA6ED-9E86-4A9F-AF5A-094DD431F901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E326A38F-9CAD-4B6B-98D0-7FF1C460B3B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E326A38F-9CAD-4B6B-98D0-7FF1C460B3B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E326A38F-9CAD-4B6B-98D0-7FF1C460B3B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E326A38F-9CAD-4B6B-98D0-7FF1C460B3B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

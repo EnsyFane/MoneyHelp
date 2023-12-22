@@ -1,7 +1,7 @@
 ﻿using MoneyHelp.Core.Models;
 using MoneyHelp.Core.Results;
 
-namespace MoneyHelp.Api.Services.Abstractions;
+namespace MoneyHelp.Services.Abstractions;
 
 internal interface IWalletService
 {

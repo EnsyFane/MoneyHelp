@@ -6,4 +6,5 @@ public static class ErrorKeys
     public const string ChangesNotSavedError = "[ChangesNotSavedError]";
     public const string TooManyRowsAffectedError = "[TooManyRowsAffectedError]";
     public const string EntityNotFoundError = "[EntityNotFoundError]";
+    public const string DuplicateEntityError = "[DuplicateEntityError]";
 }

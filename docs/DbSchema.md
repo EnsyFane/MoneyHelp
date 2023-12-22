@@ -8,6 +8,12 @@ class Entity {
     +DateTime? DeletedOn
 }
 
+UserEntity --|> Entity
+
+class UserEntity {
+    +Guid UserId
+}
+
 User --|> Entity
 
 class User {
@@ -20,19 +26,17 @@ class User {
 }
 
 User --o Wallet
-Wallet --|> Entity
+Wallet --|> UserEntity
 
 class Wallet {
-    +Guid UserId
     +String Name
 }
 
 Wallet --o Transaction
-Transaction --|> Entity
+Transaction --|> UserEntity
 
 class Transaction {
     +Guid WalletId
-    +Guid UserId
     +Guid TypeId
     +Decimal Amount
     +String? Description
@@ -40,7 +44,7 @@ class Transaction {
 }
 
 Transaction ..> Type
-Type --|> Entity
+Type --|> UserEntity
 
 class Type {
     +String Name

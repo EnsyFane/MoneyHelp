@@ -1,8 +1,8 @@
-﻿using MoneyHelp.Api.Services.Abstractions;
-using MoneyHelp.Core.Models;
+﻿using MoneyHelp.Core.Models;
 using MoneyHelp.Core.Results;
+using MoneyHelp.Services.Abstractions;
 
-namespace MoneyHelp.Api.Services;
+namespace MoneyHelp.Services.Implementations;
 
 internal sealed class WalletService : IWalletService
 {

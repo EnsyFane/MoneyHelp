@@ -10,9 +10,9 @@ namespace MoneyHelp.DataAccess.EntityFramework.Repositories;
 
 internal abstract class BaseRepository<T> : IRepository<T> where T : Entity
 {
-    private readonly DbSet<T> _set;
-    private readonly MoneyHelpDbContext _dbContext;
-    private readonly ILogger _logger;
+    protected readonly DbSet<T> _set;
+    protected readonly MoneyHelpDbContext _dbContext;
+    protected readonly ILogger _logger;
 
     protected BaseRepository(MoneyHelpDbContext dbContext, DbSet<T> set, ILogger logger)
     {
@@ -36,12 +36,12 @@ internal abstract class BaseRepository<T> : IRepository<T> where T : Entity
             var affectedRows = await _dbContext.SaveChangesAsync(ct);
             if (affectedRows < 1)
             {
-                _logger.LogWarning("Entity not added to the database.");
+                _logger.LogError("Entity of type {type} not added to the database for user {userId}.", typeof(T).Name, entity.UserId);
                 return Result.Failure<T>(new ChangesNotSavedError());
             }
             if (affectedRows > 1)
             {
-                _logger.LogWarning("Too many rows affected when adding entity to the database.");
+                _logger.LogError("Too many rows affected when adding entity of type {type} to the database for user {userId}.", typeof(T).Name, entity.UserId);
                 return Result.Failure<T>(new TooManyRowsAffectedError());
             }
 
@@ -66,7 +66,7 @@ internal abstract class BaseRepository<T> : IRepository<T> where T : Entity
 
             if (affectedRows < 1)
             {
-                _logger.LogWarning("Entity not soft deleted.");
+                _logger.LogError("Entity of type {type} with id {id} not soft deleted for user {userId}.", typeof(T).Name, id, userId);
                 return Result.Failure(new ChangesNotSavedError());
             }
 
@@ -89,7 +89,7 @@ internal abstract class BaseRepository<T> : IRepository<T> where T : Entity
 
             if (affectedRows < 1)
             {
-                _logger.LogWarning("Entity not hard deleted.");
+                _logger.LogError("Entity of type {type} with id {id} not hard deleted for user {userId}.", typeof(T).Name, id, userId);
                 return Result.Failure(new ChangesNotSavedError());
             }
 
@@ -128,7 +128,8 @@ internal abstract class BaseRepository<T> : IRepository<T> where T : Entity
 
             if (result is null)
             {
-                return Result.Failure<T>(new EntityNotFoundError());
+                _logger.LogWarning("Entity of type {type} with id {id} not found for user {userId}.", typeof(T).Name, id, userId);
+                return Result.Failure<T>(new EntityNotFoundError<T>());
             }
 
             return Result.Success(result);
@@ -150,7 +151,7 @@ internal abstract class BaseRepository<T> : IRepository<T> where T : Entity
 
             if (affectedRows < 1)
             {
-                _logger.LogWarning("Entity not soft deleted.");
+                _logger.LogError("Entity of type {type} with id {id} not updated for user {userId}.", typeof(T).Name, entity.Id, entity.UserId);
                 return Result.Failure(new ChangesNotSavedError());
             }
 
@@ -162,13 +163,14 @@ internal abstract class BaseRepository<T> : IRepository<T> where T : Entity
         }
     }
 
-    private Result<TResult> HandleRepositoryException<TResult>(Exception ex)
+    protected Result<TResult> HandleRepositoryException<TResult>(Exception ex)
     {
         switch (ex)
         {
             default:
-                _logger.LogError(ex.Message);
-                return Result.Failure<TResult>(new GenericRepositoryError(ex));
+                var error = new GenericRepositoryError(ex);
+                _logger.LogError(error.Message);
+                return Result.Failure<TResult>(error);
         }
     }
 }
